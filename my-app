@@ -4,41 +4,20 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Replace this with your actual build steps
-                echo 'Building...'
+                // Your build steps here
             }
         }
-    }
 
-    post {
-        success {
-            script {
-                slackSend (
-                    color: 'good', // Customize the color for successful build
-                    message: "Build Status: Successful", // Message for successful build
-                    channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slack id new' // Use your Slack credential ID here
-                )
-            }
-        }
-        failure {
-            script {
-                slackSend (
-                    color: 'danger', // Customize the color for failed build
-                    message: "Build Status: Failed", // Message for failed build
-                    channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
-                )
-            }
-        }
-        changed {
-            script {
-                slackSend (
-                    color: '#36a64f', // Customize the color for code changes
-                    message: "Code changes detected in this build.", // Message for code changes
-                    channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
-                )
+        stage('Notify Slack') {
+            steps {
+                script {
+                    slackSend (
+                        color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
+                        message: currentBuild.currentResult == 'SUCCESS' ? 'Build Successful' : 'Build Failed',
+                        channel: 'pearlthoughts-bby6419', // Specify the Slack channel where you want to send the notification
+                        tokenCredentialId: 'slackidhere' // Use your Slack credential ID
+                    )
+                }
             }
         }
     }
