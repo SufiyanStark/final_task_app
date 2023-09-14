@@ -17,7 +17,7 @@ pipeline {
                     color: 'good', // Customize the color for successful build
                     message: "Build Status: Successful", // Message for successful build
                     channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
+                    tokenCredentialId: 'slack id new' // Use your Slack credential ID here
                 )
             }
         }
