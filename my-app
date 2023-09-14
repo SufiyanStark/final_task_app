@@ -14,7 +14,7 @@ pipeline {
                     slackSend (
                         color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
                         message: currentBuild.currentResult == 'SUCCESS' ? 'Build Successful' : 'Build Failed',
-                        channel: 'pearlthoughts-bby6419', // Specify the Slack channel where you want to send the notification
+                        channel: 'finaltask', // Specify the Slack channel where you want to send the notification
                         tokenCredentialId: 'slackidhere' // Use your Slack credential ID
                     )
                 }
