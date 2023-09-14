@@ -14,17 +14,18 @@ pipeline {
                 // Your build steps here
             }
         }
+    }
 
-        stage('Notify Slack') {
-            steps {
-                script {
-                    slackSend (
-                        color: '#36a64f', // Customize the color
-                        message: "Build Status: ${currentBuild.currentResult}", // Include build status
-                        channel: '#general', // Specify the Slack channel
-                        tokenCredentialId: 'slack-id' // Use your Slack credential ID
-                    )
-                }
+    post {
+        success {
+            // Notify Slack on successful build
+            script {
+                slackSend (
+                    color: '#36a64f', // Customize the color
+                    message: "Build Status: ${currentBuild.currentResult}", // Include build status
+                    channel: '#general', // Specify the Slack channel
+                    tokenCredentialId: 'slack-id' // Use your Slack credential ID
+                )
             }
         }
     }
