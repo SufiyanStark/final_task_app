@@ -6,7 +6,7 @@ stage('Notify Slack') {
                     color: '#36a64f',
                     message: "Build Status: ${currentBuild.currentResult}",
                     channel: '#general',
-                    tokenCredentialId: 'slack id new'
+                    tokenCredentialId: 'slackidhere'
                 )
             } catch (Exception e) {
                 echo "Error sending Slack notification: ${e.getMessage()}"
