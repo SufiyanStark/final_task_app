@@ -2,32 +2,18 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the code from SCM and poll for changes
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PollSCM', ignorePostCommitHooks: true, polling: true]], userRemoteConfigs: [[credentialsId: 'your-git-credentials-id', url: 'https://github.com/SufiyanStark/final_task_app.git']]])
-            }
-        }
+        // Your build stages here
 
-        stage('Build') {
+        stage('Notify Slack') {
             steps {
-                // Your actual build steps go here
-                sh 'echo "Building the project..."'
-                sh 'mvn clean install'  // Example Maven build step
-            }
-        }
-    }
-
-    post {
-        success {
-            // Notify Slack on successful build
-            script {
-                slackSend (
-                    color: '#36a64f', // Customize the color
-                    message: "Build Status: ${currentBuild.currentResult}", // Include build status
-                    channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slack-id' // Use your Slack credential ID
-                )
+                script {
+                    slackSend (
+                        color: '#36a64f', // Customize the color
+                        message: "Build Status: ${currentBuild.currentResult}", // Include build status
+                        channel: '#general', // Specify the Slack channel
+                        tokenCredentialId: 'slack-id' // Use your Slack credential ID
+                    )
+                }
             }
         }
     }
