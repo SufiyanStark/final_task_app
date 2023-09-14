@@ -2,16 +2,18 @@ pipeline {
     agent any
 
     triggers {
-        cron('H 0,12 * * *') // Schedule to trigger every 12 hours
+        // Trigger the build when a change is pushed to the repository
+        scm('*/5 * * * *') // Poll SCM every 5 minutes (adjust the interval as needed)
     }
 
     stages {
-        // Your build stages here
+        stage('Build') {
+            steps {
+                // Your build steps here
+            }
+        }
 
         stage('Notify Slack') {
-            when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-            }
             steps {
                 script {
                     slackSend (
