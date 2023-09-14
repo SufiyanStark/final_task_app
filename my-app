@@ -1,16 +1,20 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build') {
+        // Your build stages here
+
+        stage('Notify Slack') {
             steps {
-                echo 'Building the application...'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
+                script {
+                    slackSend (
+                        color: '#36a64f', // Customize the color
+                        message: "Build Status: ${currentBuild.currentResult}", // Include build status
+                        channel: '#general', // Specify the Slack channel
+                        tokenCredentialId: 'slack-id' // Use your Slack credential ID
+                    )
+                }
             }
         }
     }
 }
-hello
