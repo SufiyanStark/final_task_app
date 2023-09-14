@@ -2,7 +2,12 @@ pipeline {
     agent any
 
     stages {
-        // Your build stages here
+        stage('Build') {
+            steps {
+                // Replace this with your actual build steps
+                echo 'Building...'
+            }
+        }
     }
 
     post {
@@ -12,7 +17,7 @@ pipeline {
                     color: 'good', // Customize the color for successful build
                     message: "Build Status: Successful", // Message for successful build
                     channel: '#general', // Specify the Slack channel
-                    tokenCredentialId: 'slack id new' // Use your Slack credential ID here
+                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
                 )
             }
         }
