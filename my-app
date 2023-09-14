@@ -1,9 +1,11 @@
 pipeline {
     agent any
 
-    triggers {
-        // Trigger the build when a change is pushed to the repository
-        scm('*/5 * * * *') // Poll SCM every 5 minutes (adjust the interval as needed)
+    options {
+        // Poll the SCM for changes every 5 minutes
+        buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '5'))
+        timestamps()
+        pollSCM('* * * * *')
     }
 
     stages {
