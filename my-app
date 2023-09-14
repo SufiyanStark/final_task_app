@@ -3,44 +3,37 @@ pipeline {
 
     stages {
         // Your build stages here
+    }
 
-        stage('Notify Slack') {
-            steps {
-                script {
-                    def buildStatus = currentBuild.currentResult
-                    def lastBuild = currentBuild.rawBuild.getPreviousBuild()
-                    
-                    if (lastBuild) {
-                        def changeSet = currentBuild.rawBuild.changeSets
-                        if (changeSet) {
-                            def codeChanges = changeSet.pollingBaseline().size()
-                            if (codeChanges > 0) {
-                                slackSend (
-                                    color: '#36a64f', // Customize the color for code changes
-                                    message: "Code changes detected in this build.", // Message for code changes
-                                    channel: '#general', // Specify the Slack channel
-                                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
-                                )
-                            }
-                        }
-                    }
-
-                    if (buildStatus == 'SUCCESS') {
-                        slackSend (
-                            color: 'good', // Customize the color for successful build
-                            message: "Build Status: Successful", // Message for successful build
-                            channel: '#general', // Specify the Slack channel
-                            tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
-                        )
-                    } else {
-                        slackSend (
-                            color: 'danger', // Customize the color for failed build
-                            message: "Build Status: Failed", // Message for failed build
-                            channel: '#general', // Specify the Slack channel
-                            tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
-                        )
-                    }
-                }
+    post {
+        success {
+            script {
+                slackSend (
+                    color: 'good', // Customize the color for successful build
+                    message: "Build Status: Successful", // Message for successful build
+                    channel: '#general', // Specify the Slack channel
+                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
+                )
+            }
+        }
+        failure {
+            script {
+                slackSend (
+                    color: 'danger', // Customize the color for failed build
+                    message: "Build Status: Failed", // Message for failed build
+                    channel: '#general', // Specify the Slack channel
+                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
+                )
+            }
+        }
+        changed {
+            script {
+                slackSend (
+                    color: '#36a64f', // Customize the color for code changes
+                    message: "Code changes detected in this build.", // Message for code changes
+                    channel: '#general', // Specify the Slack channel
+                    tokenCredentialId: 'slackidhere' // Use your Slack credential ID here
+                )
             }
         }
     }
