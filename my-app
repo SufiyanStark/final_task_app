@@ -1,10 +1,17 @@
 pipeline {
     agent any
 
+    triggers {
+        cron('H 0,12 * * *') // Schedule to trigger every 12 hours
+    }
+
     stages {
         // Your build stages here
 
         stage('Notify Slack') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
             steps {
                 script {
                     slackSend (
