@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-    options {
-        // Poll the SCM for changes every 5 minutes
-        buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '5'))
-        timestamps()
-        pollSCM('* * * * *')
-    }
-
     stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from SCM and poll for changes
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PollSCM', ignorePostCommitHooks: true, polling: true]], userRemoteConfigs: [[credentialsId: 'your-git-credentials-id', url: 'https://github.com/SufiyanStark/final_task_app.git']]])
+            }
+        }
+
         stage('Build') {
             steps {
                 // Your build steps here
