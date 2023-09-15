@@ -13,7 +13,7 @@ pipeline {
                     slackSend (
                         color: '#36a64f', // Customize the color
                         message: "Build Status: ${currentBuild.currentResult}", // Include build status
-                        channel: "${pearlthoughts-bby6419}/${finaltask}", // Combine workspace and channel
+                        channel: "${SLACK_CHANNEL}", // Use only the channel name
                         tokenCredentialId: 'slackidhere' // Use your Slack credential ID
                     )
                 }
